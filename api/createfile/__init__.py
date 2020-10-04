@@ -18,7 +18,7 @@ def route(app):
             requests.post(url,
                           json={
                               "message": request.json.get('message', "This is a default message"),
-                              "selectedDate": request.json['selectedDate']
+                              "scheduledFor": request.json['selectedDate']
                           })
         except Exception:
             print(f"Bad request to '{url}'.", request.json)
