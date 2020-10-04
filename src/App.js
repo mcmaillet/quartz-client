@@ -11,36 +11,49 @@ class App extends React.Component {
     super();
     this.state = { 
       selectedDate: new Date(),
-      message: ""
+      requestMessage: "Hello from the web app",
+      responseMessage: ""
     };
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleDateChange = this.handleDateChange.bind(this);
+    this.handleMessageChange = this.handleMessageChange.bind(this);
   }
-  handleSubmit(selectedDate) {
+  handleSubmit(selectedDate, requestMessage) {
     fetch('/api/createfile', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ selectedDate: selectedDate }),
+        body: JSON.stringify({
+           selectedDate: selectedDate,
+           message: requestMessage
+         }),
     }).then(response => {
         response.json()
             .then(x => {
-                this.setState({ message: x.message })
+                this.setState({ 
+                  requestMessage: "",
+                  responseMessage: x.message 
+                })
             })
     });
   }
-  handleChange(newDate) {
+  handleDateChange(newDate) {
     this.setState({ selectedDate: newDate });
+  }
+  handleMessageChange(event){
+    this.setState({ requestMessage: event.target.value });
   }
   render() {
   return (
-    <div>
+    <div className="app-wrapper">
+      <input type="text" value={this.state.requestMessage} onChange={this.handleMessageChange}/>
+      <br />
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <DateTimePicker value={this.state.selectedDate} onChange={this.handleChange} />
+      <DateTimePicker value={this.state.selectedDate} onChange={this.handleDateChange} />
     </MuiPickersUtilsProvider>
-     <button onClick={() => this.handleSubmit(this.state.selectedDate)}>Submit</button>
-     <div>{this.state.message}</div>
+     <button onClick={() => this.handleSubmit(this.state.selectedDate, this.state.requestMessage)}>Submit</button>
+     <div>{this.state.responseMessage}</div>
   </div>
   );
   }
