@@ -1,15 +1,17 @@
+from config import *
+
+
 def route(app):
     @app.route('/api/createfile', methods=['POST'])
     def createfile_post():
         import requests
         from flask import jsonify, request
-        from util.config_reader import ConfigReader
-        config_reader = ConfigReader()
+        parsed_config = get_parsed_config()
         if 'selectedDate' not in request.json.keys():
             return jsonify(
                 {'message': "Bad request. Date + time required."})
 
-        url = config_reader.get('CreateFileURL')
+        url = parsed_config.get('CreateFileURL', None)
 
         if url is None:
             return jsonify({

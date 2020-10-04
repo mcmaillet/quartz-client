@@ -1,5 +1,6 @@
 from flask import Flask
 
+from config import *
 from setup import *
 
 app = Flask(__name__, static_folder='build', static_url_path='/')
@@ -14,9 +15,8 @@ initialize_api_routes(app)
 
 if __name__ == '__main__':
     print('app run start')
-    from util.config_reader import ConfigReader
 
-    config_reader = ConfigReader()
-    app.run(debug=config_reader.get_boolean('Debug'),
-            use_reloader=config_reader.get_boolean('UseReloader'))
+    parsed_config = get_parsed_config()
+    app.run(debug=parsed_config.getboolean('Debug', False),
+            use_reloader=parsed_config.getboolean('UseReloader', False))
     print('app run end')
