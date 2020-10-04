@@ -1,6 +1,3 @@
-ENVIRONMENT = "env.ini"
-
-
 def get_parsed_config():
     import configparser
 
