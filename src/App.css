@@ -20,5 +20,6 @@
 
 .app-wrapper {
   text-align: center;
-  
+  top: 40vh;
+  position: relative;
 }
