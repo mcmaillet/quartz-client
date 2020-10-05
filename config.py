@@ -1,3 +1,7 @@
+CREATE_FILE_URL_KEY = "CreateFileURL"
+TOKEN_KEY = "TOKEN"
+
+
 def get_parsed_config():
     import configparser
 

@@ -11,20 +11,23 @@ def route(app):
             return jsonify(
                 {'message': "Bad request. Date + time required."})
 
-        url = parsed_config.get('CreateFileURL', None)
+        url = parsed_config.get(CREATE_FILE_URL_KEY, None)
 
         if url is None:
             return jsonify({
                 'message': "Client not configured. Missing URL."})
         try:
-            requests.post(url,
-                          json={
-                              "message": request.json.get('message', "This is a default message"),
-                              "scheduledFor": request.json['selectedDate']
-                          })
+            response = requests.post(url,
+                                     headers={
+                                         "token": parsed_config.get(TOKEN_KEY, None)
+                                     },
+                                     json={
+                                         "message": request.json.get('message', "This is a default message"),
+                                         "scheduledFor": request.json['selectedDate']
+                                     })
         except Exception:
             print(f"Bad request to '{url}'.", request.json)
             return jsonify({
                 'message': "Your request was unsuccessful."})
         return jsonify({
-            'message': f"Your request to create a file at '{request.json['selectedDate']}' was dispatched."})
+            'message': response.json()["message"]})
