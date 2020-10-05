@@ -17,6 +17,6 @@ if __name__ == '__main__':
     print('app run start')
 
     parsed_config = get_parsed_config()
-    app.run(debug=parsed_config.getboolean('Debug', False),
-            use_reloader=parsed_config.getboolean('UseReloader', False))
+    app.run(debug=parsed_config.get('Debug', False),
+            use_reloader=parsed_config.get('UseReloader', False))
     print('app run end')
